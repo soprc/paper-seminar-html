@@ -23,12 +23,12 @@
 
 ## 安装
 
-将本仓库地址发给 Codex，请它安装仓库中 `skills/paper-seminar-html` 这个 skill。也可以解压或克隆本仓库后，把整个同名 skill 目录放到个人 Codex 技能目录中。默认位置为 `~/.codex/skills/paper-seminar-html/`；如设置了 `CODEX_HOME`，使用其下的 `skills/`。下一轮对话中调用。
+将本仓库地址发给 Codex，请它将仓库中的 `skills/` 目录以 `paper-seminar-html` 为名安装。也可以解压或克隆本仓库后，将 `skills/` 中的全部内容复制到个人 Codex 技能目录下的 `paper-seminar-html/` 文件夹中。默认位置为 `~/.codex/skills/paper-seminar-html/`；如设置了 `CODEX_HOME`，使用其下的 `skills/`。下一轮对话中调用。
 
 ## 工具与依赖
 
-- [技能说明](skills/paper-seminar-html/SKILL.md) 定义内容、证据、视觉风格与交付标准。
-- [制作指南](skills/paper-seminar-html/references/authoring.md) 提供页面片段、媒体标记和命令示例。
-- [离线 HTML 模板](skills/paper-seminar-html/assets/deck.html) 与打包工具可直接复用。打包需要 Python 3.9+，放映只需现代浏览器。可选公式工具使用 TeX Live 或 MiKTeX 中的 latex、dvisvgm 和指南所列宏包。
+- [技能说明](skills/SKILL.md) 定义内容、证据、视觉风格与交付标准。
+- [制作指南](skills/references/authoring.md) 提供页面片段、媒体标记和命令示例。
+- [离线 HTML 模板](skills/assets/deck.html) 与打包工具可直接复用。打包需要 Python 3.9+，放映只需现代浏览器。可选公式工具使用 TeX Live 或 MiKTeX 中的 latex、dvisvgm 和指南所列宏包。
 
 仓库提供通用制作工具。每篇论文的 PDF、图表、视频按各自来源取用，汇报中保留出处。
