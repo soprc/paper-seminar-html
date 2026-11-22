@@ -24,6 +24,15 @@
 
 **图与视频。** 用 PDF 渲染器导出真实首页与高分辨率裁图。保留原图裁剪坐标和图号，以便返修。源视频可用 `<video controls muted playsinline preload="metadata" poster="{{asset:media/poster.jpg}}" src="{{asset:media/demo.mp4}}"></video>`。用 figcaption 写明组别、任务与作者项目页。双栏使用 `.duo` 并显式设定 grid-template-columns；并列面板可用 `.parallel`。表格用 `.t25`。
 
+**分区与分步。** 给需要区分的图文组加 `.region`。静态图表、视频和并排对照仅用分区样式。需要按顺序讲的内容按 DOM 顺序标记至少两个同级 `data-step` 元素，避免嵌套。标题、整页背景、固定参考图和页脚放在步骤之外。模板只对标记的步骤切换蓝框与不透明度，退回上一页时回到它的最后一步。视频由模板在所在页进入时统一启动，勿在隐藏页上设置全局 autoplay。
+
+```html
+<div class="parallel">
+  <div class="region" data-step><h3>前向扰动</h3><p>对训练动作加入已知噪声，构造指定时刻的输入。</p></div>
+  <div class="region" data-step><h3>速度回归</h3><p>给定该输入和时刻，预测速度并与训练目标比较。</p></div>
+</div>
+```
+
 **打包。** 将 section 片段保存到 slides.html，所有素材路径相对于此文件。运行 `python scripts/build.py slides.html talk.html --title "汇报题名"`。工具把明确标记的文件转成 data URI；正文由作者负责，避免插入外部 iframe、脚本和样式。只需 Python 3.9+ 标准库即可打包。
 
 **放映检查。** 在 Chromium 中离线打开 talk.html，方向键翻页，F 全屏，N 开讲稿，G 开目录，Esc 关闭弹层，点原图放大。逐页截取相同尺寸（例如 1280×720）的画面，用 Pillow 等工具拼成全览。核对实际页数、隐藏的讲稿、公式渲染、页面边界及视频播放进度。最后交付真正验证过的文件。
