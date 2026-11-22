@@ -13,6 +13,8 @@
 
 在此基础上，本项目针对中文科研组会制作了可离线放映的 HTML 模板，并提供 LaTeX 矢量公式、逐页讲稿、原图放大和本地视频嵌入。上游项目在其 [README](https://github.com/zsyggg/paper-craft-skills#license) 中标注采用 MIT 许可证。
 
+感谢 skJack 公开分享 [kelip-slide](https://github.com/skJack/kelip-slide) 和配套的[具身智能讲义](https://github.com/skJack/-lip-)。本项目参考了 kelip-slide 的单文件 HTML 放映方式、键盘导航和整套幻灯片的预览检查流程。讲义中用大图和并排面板呈现对照、沿流程图逐步解释算法的做法，也影响了本项目的方法页设计。
+
 ## 使用
 
 安装后，把 PDF 附到 Codex 对话中，或给出可访问的论文链接。例如：
