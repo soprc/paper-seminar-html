@@ -24,7 +24,9 @@
 
 **图与视频。** 用 PDF 渲染器导出真实首页与高分辨率裁图。保留原图裁剪坐标和图号，以便返修。源视频可用 `<video controls muted playsinline preload="metadata" poster="{{asset:media/poster.jpg}}" src="{{asset:media/demo.mp4}}"></video>`。用 figcaption 写明组别、任务与作者项目页。双栏使用 `.duo` 并显式设定 grid-template-columns；并列面板可用 `.parallel`。表格用 `.t25`。
 
-**分区与分步。** 给需要区分的图文组加 `.region`。静态图表、视频和并排对照仅用分区样式。需要按顺序讲的内容按 DOM 顺序标记至少两个同级 `data-step` 元素，避免嵌套。标题、整页背景、固定参考图和页脚放在步骤之外。模板只对标记的步骤切换蓝框与不透明度，退回上一页时回到它的最后一步。视频由模板在所在页进入时统一启动，勿在隐藏页上设置全局 autoplay。
+**组合标识。** 同济封面的深蓝区域采用[官网白版](https://www.tongji.edu.cn/images/logo.png)，正文采用[统一身份认证页蓝版](https://iam.tongji.edu.cn/idp/themes/default/images/logo.png?a=1)。下载对应原图，在每个 section 内直接放置 `<img class="institution-mark" src="{{asset:media/tongji-blue.png}}" alt="同济大学">`，封面换为白版路径。交付前逐页核对图片和标题的边界。
+
+**分区与分步。** 静态图表、视频和并排对照仅用 `.region` 分区。流程使用 `data-step` 按文档中首次出现的顺序逐步累积高亮。空属性各表示独立一步，使用相同的非空值可将同一步的多个节点或公式一起点亮。标题、固定参考图和页脚放在步骤之外。首屏显示淡化全貌，每前进一步点亮一组，前面各组持续高亮；回退依次撤销。视频由模板在进入所在页时统一启动。
 
 ```html
 <div class="parallel">

@@ -30,26 +30,40 @@ section:not(.cover)>h2{color:#141b24;font-weight:700}
 .region{background:#fff;border-radius:8px;box-shadow:0 2px 9px #24395718;padding:18px;min-width:0}
 [data-step].step-muted{opacity:.46}
 [data-step].step-current{outline:2px solid #2362a6;outline-offset:2px}
+.institution-mark{position:absolute;pointer-events:none;object-fit:contain;z-index:6}
+section:not(.cover)>.institution-mark{right:50px;top:10px;width:164px;height:40px}
+.cover>.institution-mark{left:52px;top:22px;width:177px;height:59px}
+.cover:has(>.institution-mark) .covertext{padding-top:105px}
 .cover .eng{font-family:inherit}
 </style></head><body><main id="stage"><!--SLIDES-->
 <div aria-label="演示工具" class="controls"><button aria-label="目录" id="menu" title="目录（G）">☰</button><button aria-label="讲稿" id="notes" title="讲稿（N）">☷</button><button aria-label="全屏" id="fs" title="全屏（F）">⛶</button><button aria-label="上一页" id="prev" title="上一页（←）">‹</button><output id="count"></output><button aria-label="下一页" id="next" title="下一页（→）">›</button></div><div class="progress"></div></main><dialog id="panel"><header><strong></strong><button aria-label="关闭" title="关闭">×</button></header><div id="detail"></div></dialog>
 <script>
 const $=s=>document.querySelector(s), stage=$('#stage'), pages=[...stage.querySelectorAll('section')], panel=$('#panel');let current=-1;
 function fit(){stage.style.setProperty('--scale',Math.min(innerWidth/1280,innerHeight/720))}
-const steps = pages.map(page => Array.from(page.querySelectorAll('[data-step]')));
+const steps = pages.map(page => {
+  const groups = new Map();
+  for (const item of page.querySelectorAll('[data-step]')) {
+    const key = item.dataset.step || item;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(item);
+  }
+  return Array.from(groups.values());
+});
 let step = 0;
 function setStep(index) {
   const items = steps[current];
-  step = Math.max(0, Math.min(index, items.length - 1));
-  items.forEach((item, i) => {
-    item.classList.toggle('step-current', items.length > 1 && i === step);
-    item.classList.toggle('step-muted', items.length > 1 && i !== step);
+  step = Math.max(items.length > 1 ? -1 : 0, Math.min(index, items.length - 1));
+  items.forEach((group, i) => {
+    for (const item of group) {
+      item.classList.toggle('step-current', items.length > 1 && i <= step);
+      item.classList.toggle('step-muted', items.length > 1 && i > step);
+    }
   });
   $('#count').textContent = (current + 1) + ' / ' + pages.length;
-  $('#prev').disabled = current === 0 && step === 0;
+  $('#prev').disabled = current === 0 && step === (items.length > 1 ? -1 : 0);
   $('#next').disabled = current === pages.length - 1 && step >= items.length - 1;
 }
-function show(n, index = 0) {
+function show(n, index = -1) {
   n = Math.max(0, Math.min(pages.length - 1, n));
   if (current !== n) {
     if (current >= 0) pages[current].querySelectorAll('video').forEach(v => v.pause());
@@ -68,9 +82,9 @@ function show(n, index = 0) {
 }
 function advance(delta) {
   const index = step + delta;
-  if (index >= 0 && index < steps[current].length) return setStep(index);
+  if (steps[current].length > 1 && index >= -1 && index < steps[current].length) return setStep(index);
   const target = current + delta;
-  if (target >= 0 && target < pages.length) show(target, delta < 0 ? steps[target].length - 1 : 0);
+  if (target >= 0 && target < pages.length) show(target, delta < 0 ? steps[target].length - 1 : -1);
 }
 function fromHash(){show((parseInt(location.hash.slice(1))||1)-1)}
 function dialogView(kind){$('#detail').replaceChildren();panel.querySelector('strong').textContent=kind==='notes'?'第 '+(current+1)+' 页 · 讲稿':'汇报目录';if(kind==='notes'){let p=document.createElement('p');p.textContent=pages[current].querySelector('aside').textContent;$('#detail').append(p)}else{let ol=document.createElement('ol');pages.forEach((s,i)=>{let li=document.createElement('li'),b=document.createElement('button');b.textContent=String(i+1).padStart(2,'0')+'　'+s.dataset.topic;b.onclick=()=>{panel.close();show(i)};li.append(b);ol.append(li)});$('#detail').append(ol)}panel.showModal()}
